@@ -1,0 +1,96 @@
+---
+version: "3.9"
+
+services:
+
+  memberbesu:
+    depends_on:
+      - membertessera
+    entrypoint: /bin/bash -c "/opt/besu/bin/besu --config-file=/config/config.member.toml --p2p-host=${IP_NODE} --privacy-enabled --privacy-url=http://membertessera:9101 --privacy-public-key-file=/opt/besu/keys/tm.pub --privacy-onchain-groups-enabled=${PRIVACY_ONCHAIN_GROUPS_ENABLED:-false}"
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=memberbesu,service.version=${BESU_VERSION:-latest}
+      - NODE_ID=6
+    image: hyperledger/besu:${BESU_VERSION:-latest}
+    networks:
+      quorum-dev-quickstart:
+        ipv4_address: 172.16.239.16
+    ports:
+      - 8545:8545/tcp
+      - 8546:8546/tcp
+      - 9545:9545/tcp
+      - 9545:9545/udp
+      - 30303:30303/tcp
+      - 30303:30303/udp
+    profiles:
+      - member
+    restart: on-failure
+    volumes:
+      - ./config/besu/:/config
+      - ./config/keys:/opt/besu/keys
+      - ./logs/besu:/tmp/besu
+      - /data:/data
+
+  membertessera:
+    profiles:
+      - member
+    build:
+      context: config/tessera
+      args:
+        TESSERA_VERSION: ${TESSERA_VERSION:-latest}
+    environment:
+      IP_NODE_T: ${IP_NODE}
+      TESSERA_MODE: orion
+    expose:
+      - 9000
+      - 9080
+      - 9101
+    ports:
+      - 9080:9080
+      - 9000:9000
+      - 9101:9101
+    restart: "no"
+    volumes:
+      - ./config/keys:/config/keys
+      - ./logs/tessera:/var/log/tessera/
+    networks:
+      quorum-dev-quickstart:
+        ipv4_address: 172.16.239.26
+
+  validator:
+    entrypoint: /bin/bash -c "/opt/besu/bin/besu --config-file=/config/config.validator.toml --p2p-host=${IP_NODE}"
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=validator,service.version=${BESU_VERSION:-latest}
+    image: hyperledger/besu:${BESU_VERSION:-latest}
+    labels:
+      - "consensus=besu"
+    networks:
+      quorum-dev-quickstart:
+        ipv4_address: 172.16.239.11
+    ports:
+      - 8545:8545/tcp
+      - 9545:9545/tcp
+      - 30303:30303/tcp
+      - 30303:30303/udp
+    profiles:
+      - validator
+    restart: "on-failure"
+    volumes:
+      - ./config/besu/:/config
+      - ./config/keys:/opt/besu/keys
+      - ./logs/besu:/tmp/besu
+      - /data:/data
+
+  besucli:
+    image: hyperledger/besu:${BESU_VERSION:-latest}
+    volumes:
+      - ./cli:/opt/besu/cli
+    profiles:
+      - cli
+
+networks:
+  quorum-dev-quickstart:
+    name: quorum-dev-quickstart
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.239.0/24

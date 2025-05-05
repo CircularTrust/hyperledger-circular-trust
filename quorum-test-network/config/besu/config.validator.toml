@@ -1,0 +1,47 @@
+
+genesis-file="/config/genesis.json"
+node-private-key-file="/opt/besu/keys/nodekey"
+logging="INFO"
+data-path="/data"
+host-allowlist=["*"]
+min-gas-price=0
+
+# rpc
+rpc-http-enabled=true
+rpc-http-host="0.0.0.0"
+rpc-http-port=8545
+rpc-http-cors-origins=["*"]
+rpc-http-api=["NET","DEBUG","ADMIN","TXPOOL","PRIV","PERM","QBFT"]
+rpc-http-authentication-enabled=true
+rpc-http-authentication-jwt-public-key-file="/opt/besu/keys/rpcPublicKey.pem"
+
+# ws
+rpc-ws-enabled=false
+
+
+# graphql
+graphql-http-enabled=false
+
+# metrics
+metrics-enabled=true
+metrics-host="0.0.0.0"
+metrics-port=9545
+
+# permissions
+permissions-nodes-config-file-enabled=false
+#permissions-nodes-config-file="/config/permissions_config.toml
+
+# bootnodes
+bootnodes=[
+    "enode://ea7633d1362780ed8bce54a33650e5da8c71ef66aa7e6b270d6371c4dbc4dfabdcf332bf89f5e8d313cc2362fe9cf14b011055b6a573b76455ac347219cc1dba@13.38.237.167:30303",
+    "enode://6368c830c77c8f552a69d2fee01e808f94e7f004048b974de806172f60309a42222dd44c0dbd985806f12edefe736669836671ed4d66495efc4d46b08063c51d@15.188.189.40:30303",
+    "enode://998e22637bfce56203df62ead805bf57cde9b12527cf679f36b3b3573ecddd1441d38baf294449fafba8ab981d2970824752b77ea2e14534b5b7d88d2949f9a6@35.180.249.167:30303"
+]
+
+
+# Discovery at boot is set to a list of static files, but will also discover new nodes should they be added
+# static-nodes-file="/config/static-nodes.json"
+discovery-enabled=true
+
+tx-pool-max-size="4096"
+tx-pool-limit-by-account-percentage=0.025
