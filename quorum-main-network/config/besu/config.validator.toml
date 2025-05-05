@@ -1,0 +1,64 @@
+
+genesis-file="/config/genesis.json"
+node-private-key-file="/opt/besu/keys/nodekey"
+logging="INFO"
+data-path="/data"
+host-allowlist=["*"]
+min-gas-price=100000000000
+sync-mode="FULL"
+
+# rpc
+rpc-http-enabled=true
+rpc-http-host="0.0.0.0"
+rpc-http-port=8545
+rpc-http-cors-origins=["*"]
+rpc-http-api=["ETH","WEB3","NET","ADMIN","TXPOOL","QBFT","PERM","PRIV","EEA"]
+rpc-http-api-method-no-auth=["admin_nodeInfo","admin_peers",
+    "net_peerCount","net_enode","net_listening","net_peerCount","net_services","net_version","web3_clientVersion","web3_sha3",
+    "txpool_besuTransactions","qbft_getValidatorsByBlockNumber","qbft_getPendingVotes",
+    "eth_getQuorumPayload","eth_accounts","eth_blockNumber","eth_call","eth_chainId","eth_coinbase","eth_estimateGas","eth_feeHistory","eth_gasPrice","eth_getBalance",
+    "eth_getBlockByHash","eth_getBlockByNumber","eth_getBlockTransactionCountByHash","eth_getBlockTransactionCountByNumber","eth_getCode","eth_getFilterChanges",
+    "eth_getFilterLogs","eth_getLogs","eth_getMinerDataByBlockHash","eth_getMinerDataByBlockNumber","eth_getProof","eth_getStorageAt",
+    "eth_getTransactionByBlockHashAndIndex", "eth_getTransactionByBlockNumberAndIndex","eth_getTransactionByHash","eth_getTransactionCount","eth_getTransactionReceipt",
+    "eth_getUncleByBlockHashAndIndex","eth_getUncleByBlockNumberAndIndex","eth_getUncleCountByBlockHash","eth_getUncleCountByBlockNumber","eth_getWork","eth_hashrate",
+    "eth_mining","eth_newBlockFilter","eth_newFilter","eth_newPendingTransactionFilter","eth_protocolVersion","eth_sendRawPrivateTransaction","eth_sendRawTransaction",
+    "eth_sendTransaction","eth_submitHashrate","eth_submitWork","eth_subscribe","eth_syncing","eth_uninstallFilter","eth_unsubscribe",
+    "priv_call","priv_getPrivateTransaction","priv_getTransactionCount","priv_getPrivacyPrecompileAddress","priv_getTransactionReceipt","priv_createPrivacyGroup",
+    "priv_deletePrivacyGroup","priv_findPrivacyGroup","priv_debugGetStateRoot","priv_distributeRawTransaction","priv_getEeaTransactionCount","priv_getCode",
+    "priv_getLogs","priv_newFilter","priv_uninstallFilter","priv_getFilterChanges","priv_getFilterLogs","priv_subscribe","priv_unsubscribe","privx_findOnchainPrivacyGroup",
+    "privx_findFlexiblePrivacyGroup","eea_sendRawTransaction"
+]
+rpc-http-authentication-enabled=true
+rpc-http-authentication-jwt-public-key-file="/opt/besu/keys/rpcPublicKey.pem"
+
+# ws
+rpc-ws-enabled=false
+
+
+# graphql
+graphql-http-enabled=false
+
+# metrics
+metrics-enabled=true
+metrics-host="0.0.0.0"
+metrics-port=9545
+
+# permissions
+permissions-nodes-config-file-enabled=false
+#permissions-nodes-config-file="/config/permissions_config.toml
+
+# bootnodes
+bootnodes=[
+    "enode://b4717ced35e0203e59fc84a48d14827a768cd5b98de7fd7eb7be022f74d3f6f912506777b43100aa21497ba8b439cd6d4c2ee085937a0453fdf78debb18212d5@13.39.192.80:30303",
+    "enode://9b03f8a0d1be8b327a6da208ab5ceba9d0904e3addb265b7185da59d0160365d135f54833d4a137af56c081b30b44ad5ad78a3eb905f299869873f26ee119143@13.37.16.149:30303",
+    "enode://5b34dfd14294e53bf95f03b48969230dd76db3b3f80e7a2b40e95ff8d2a4194228803d5c6bbf532b0c1d780ec4b555706ffc9347902676cb809ccd7070c882e7@13.39.190.75:30303"
+]
+
+
+# Discovery at boot is set to a list of static files, but will also discover new nodes should they be added
+# static-nodes-file="/config/static-nodes.json"
+discovery-enabled=true
+
+# Pool size for pending transactions
+tx-pool-max-size="4096"
+tx-pool-limit-by-account-percentage=0.025
