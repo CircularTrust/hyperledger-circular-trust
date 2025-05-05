@@ -1,0 +1,21 @@
+{
+  "algorithm": "qbft",
+  "nodes": [
+    {
+      "name": "Validator 0",
+      "client": "besu",
+      "rpcUrl": "http://172.18.239.11:8545"
+    },
+    {
+      "name": "Validator 1",
+      "client": "besu",
+      "rpcUrl": "http://172.18.239.12:8545"
+    },
+    {
+      "name": "Validator 2",
+      "client": "besu",
+      "rpcUrl": "http://172.18.239.13:8545"
+    }
+  ]
+}
+ 

@@ -1,0 +1,89 @@
+---
+version: "3.9"
+
+services:
+  validator0:
+    container_name: validator0
+    image: hyperledger/besu:${BESU_VERSION:-latest}
+    entrypoint: /bin/bash -c "/opt/besu/bin/besu --config-file=/config/config.validator.toml --p2p-host=172.18.239.11"
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=validator,service.version=${BESU_VERSION:-latest}
+    labels:
+      - "consensus=besu"
+    networks:
+      private_blockchain:
+        ipv4_address: 172.18.239.11
+    ports:
+      - 8000:8545/tcp
+      - 8100:8546/tcp
+    volumes:
+      - ./config/besu/:/config
+      - ./config/keys/validator0:/opt/besu/keys
+      - ./data/validator0:/data
+
+  validator1:
+    container_name: validator1
+    image: hyperledger/besu:${BESU_VERSION:-latest}
+    entrypoint: /bin/bash -c "/opt/besu/bin/besu --config-file=/config/config.validator.toml --p2p-host=172.18.239.12"
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=validator,service.version=${BESU_VERSION:-latest}
+    labels:
+      - "consensus=besu"
+    networks:
+      private_blockchain:
+        ipv4_address: 172.18.239.12
+    ports:
+      - 8001:8545/tcp
+      - 8101:8546/tcp
+    volumes:
+      - ./config/besu/:/config
+      - ./config/keys/validator1:/opt/besu/keys
+      - ./data/validator1:/data
+
+  validator2:
+    container_name: validator2
+    image: hyperledger/besu:${BESU_VERSION:-latest}
+    entrypoint: /bin/bash -c "/opt/besu/bin/besu --config-file=/config/config.validator.toml --p2p-host=172.18.239.13"
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=validator,service.version=${BESU_VERSION:-latest}
+    labels:
+      - "consensus=besu"
+    networks:
+      private_blockchain:
+        ipv4_address: 172.18.239.13
+    ports:
+      - 8002:8545/tcp
+      - 8102:8546/tcp
+    volumes:
+      - ./config/besu/:/config
+      - ./config/keys/validator2:/opt/besu/keys
+      - ./data/validator2:/data
+
+  besucli:
+    image: hyperledger/besu:${BESU_VERSION:-latest}
+    volumes:
+      - ./cli:/opt/besu/cli
+    profiles:
+      - cli
+    networks:
+      private_blockchain:
+
+  quorumexplorer:
+    container_name: quorumexplorer
+    image: consensys/quorum-explorer:bbc3aab
+    volumes:
+      - ./config/quorum_explorer/config.json:/app/config.json
+      - ./config/quorum_explorer/env:/app/.env.production
+    ports:
+      - 25000:25000/tcp
+    networks:
+      private_blockchain:
+        ipv4_address: 172.18.239.20
+
+networks:
+  private_blockchain:
+    name: private_blockchain
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.239.0/24
