@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "dependencies": {
+    "web3": "1.10.0"
+  },
+  "scripts": {
+    "init": "node vesting/init.js",
+    "release": "node vesting/release.js"
+  }
+}

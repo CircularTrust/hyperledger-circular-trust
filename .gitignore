@@ -1,0 +1,21 @@
+.idea
+node_modules
+package-lock.json
+.quorumDevQuickstart.lock
+report.html
+
+# Test Net
+quorum-test-network/config/keys
+quorum-test-network/logs
+quorum-test-network/.env
+
+# Main Net
+quorum-main-network/config/keys
+quorum-main-network/logs
+quorum-main-network/.env
+
+# Develop
+quorum-development-network/IPFS/data/ipfs
+
+# config auto generated
+firefly/install/dataexchange/config.json
